@@ -7,9 +7,9 @@ namespace SalonBookingSystem.DataAccess.Services
     {
         private readonly IMongoCollection<Service> _services;
 
-        public ServiceService()
+        public ServiceService(IConfiguration configuration)
         {
-            var database = DBHelper.GetDatabase();
+            var database = DBHelper.GetDatabase(configuration);
             _services = database.GetCollection<Service>("services");
         }
 

@@ -4,6 +4,7 @@
 @inject BookingService BookingService
 @inject ReviewService ReviewService
 @inject SkillService SkillService
+@inject UserService userService
 @inject UserStateService UserStateService
 @inject NavigationManager Navigation
 @inject IJSRuntime JSRuntime
@@ -694,7 +695,6 @@ else
             isLoadingBookings = true;
             bookingsList = await BookingService.GetAllAsync();
 
-            var userService = new SalonBookingSystem.DataAccess.Services.UserService();
             usersList = await userService.GetAllAsync();
         }
         catch (Exception ex)

@@ -1,4 +1,5 @@
-﻿using MongoDB.Driver;
+﻿using Microsoft.Extensions.Configuration;
+using MongoDB.Driver;
 using SalonBookingSystem.Models;
 
 namespace SalonBookingSystem.DataAccess.Services
@@ -7,9 +8,9 @@ namespace SalonBookingSystem.DataAccess.Services
     {
         private readonly IMongoCollection<User> _users;
 
-        public UserService()
+        public UserService(IConfiguration configuration)
         {
-            var database = DBHelper.GetDatabase();
+            var database = DBHelper.GetDatabase(configuration);
             _users = database.GetCollection<User>("users");
         }
 

@@ -1,16 +1,24 @@
 ﻿using MongoDB.Driver;
+using Microsoft.Extensions.Configuration;
 
 namespace SalonBookingSystem.DataAccess
 {
     public class DBHelper
     {
-        private static readonly string connectionString = "mongodb+srv://haris:2vcjvo99C@saloncluster.nrnykly.mongodb.net/?retryWrites=true&w=majority&appName=SalonCluster";
-        private static readonly string databaseName = "SaloonDatabase";
+        private static IMongoDatabase? _database;
 
-        public static IMongoDatabase GetDatabase()
+        public static IMongoDatabase GetDatabase(IConfiguration configuration)
         {
-            var client = new MongoClient(connectionString);
-            return client.GetDatabase(databaseName);
+            if (_database == null)
+            {
+                string connectionString = configuration.GetConnectionString("MongoDb");
+                string databaseName = "SaloonDatabase";
+
+                var client = new MongoClient(connectionString);
+                _database = client.GetDatabase(databaseName);
+            }
+
+            return _database;
         }
     }
 }

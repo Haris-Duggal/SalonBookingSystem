@@ -7,28 +7,12 @@
       "RelativeMoniker": "D:0:0:{9FA52A1E-B07F-4E73-B2F5-BC119B81EB0F}|SalonBookingSystem\\SalonBookingSystem.csproj|solutionrelative:salonbookingsystem\\components\\pages\\admin.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{9FA52A1E-B07F-4E73-B2F5-BC119B81EB0F}|SalonBookingSystem\\SalonBookingSystem.csproj|c:\\users\\haris duggal\\source\\repos\\salonbookingsolution\\salonbookingsystem\\components\\pages\\home.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{9FA52A1E-B07F-4E73-B2F5-BC119B81EB0F}|SalonBookingSystem\\SalonBookingSystem.csproj|solutionrelative:salonbookingsystem\\components\\pages\\home.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{9FA52A1E-B07F-4E73-B2F5-BC119B81EB0F}|SalonBookingSystem\\SalonBookingSystem.csproj|c:\\users\\haris duggal\\source\\repos\\salonbookingsolution\\salonbookingsystem\\components\\pages\\landingpage.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{9FA52A1E-B07F-4E73-B2F5-BC119B81EB0F}|SalonBookingSystem\\SalonBookingSystem.csproj|solutionrelative:salonbookingsystem\\components\\pages\\landingpage.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{9FA52A1E-B07F-4E73-B2F5-BC119B81EB0F}|SalonBookingSystem\\SalonBookingSystem.csproj|c:\\users\\haris duggal\\source\\repos\\salonbookingsolution\\salonbookingsystem\\dataaccess\\services\\bookingservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{9FA52A1E-B07F-4E73-B2F5-BC119B81EB0F}|SalonBookingSystem\\SalonBookingSystem.csproj|solutionrelative:salonbookingsystem\\dataaccess\\services\\bookingservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{9FA52A1E-B07F-4E73-B2F5-BC119B81EB0F}|SalonBookingSystem\\SalonBookingSystem.csproj|c:\\users\\haris duggal\\source\\repos\\salonbookingsolution\\salonbookingsystem\\components\\pages\\bookings.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{9FA52A1E-B07F-4E73-B2F5-BC119B81EB0F}|SalonBookingSystem\\SalonBookingSystem.csproj|solutionrelative:salonbookingsystem\\components\\pages\\bookings.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{9FA52A1E-B07F-4E73-B2F5-BC119B81EB0F}|SalonBookingSystem\\SalonBookingSystem.csproj|c:\\users\\haris duggal\\source\\repos\\salonbookingsolution\\salonbookingsystem\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{9FA52A1E-B07F-4E73-B2F5-BC119B81EB0F}|SalonBookingSystem\\SalonBookingSystem.csproj|solutionrelative:salonbookingsystem\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{9FA52A1E-B07F-4E73-B2F5-BC119B81EB0F}|SalonBookingSystem\\SalonBookingSystem.csproj|c:\\users\\haris duggal\\source\\repos\\salonbookingsolution\\salonbookingsystem\\dataaccess\\services\\userservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{9FA52A1E-B07F-4E73-B2F5-BC119B81EB0F}|SalonBookingSystem\\SalonBookingSystem.csproj|solutionrelative:salonbookingsystem\\dataaccess\\services\\userservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{9FA52A1E-B07F-4E73-B2F5-BC119B81EB0F}|SalonBookingSystem\\SalonBookingSystem.csproj|c:\\users\\haris duggal\\source\\repos\\salonbookingsolution\\salonbookingsystem\\components\\_imports.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{9FA52A1E-B07F-4E73-B2F5-BC119B81EB0F}|SalonBookingSystem\\SalonBookingSystem.csproj|solutionrelative:salonbookingsystem\\components\\_imports.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{9FA52A1E-B07F-4E73-B2F5-BC119B81EB0F}|SalonBookingSystem\\SalonBookingSystem.csproj|c:\\users\\haris duggal\\source\\repos\\salonbookingsolution\\salonbookingsystem\\dataaccess\\services\\staffservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -39,16 +23,28 @@
       "RelativeMoniker": "D:0:0:{9FA52A1E-B07F-4E73-B2F5-BC119B81EB0F}|SalonBookingSystem\\SalonBookingSystem.csproj|solutionrelative:salonbookingsystem\\dataaccess\\services\\skillservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{9FA52A1E-B07F-4E73-B2F5-BC119B81EB0F}|SalonBookingSystem\\SalonBookingSystem.csproj|c:\\users\\haris duggal\\source\\repos\\salonbookingsolution\\salonbookingsystem\\dataaccess\\services\\serviceservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{9FA52A1E-B07F-4E73-B2F5-BC119B81EB0F}|SalonBookingSystem\\SalonBookingSystem.csproj|solutionrelative:salonbookingsystem\\dataaccess\\services\\serviceservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{9FA52A1E-B07F-4E73-B2F5-BC119B81EB0F}|SalonBookingSystem\\SalonBookingSystem.csproj|c:\\users\\haris duggal\\source\\repos\\salonbookingsolution\\salonbookingsystem\\dataaccess\\services\\reviewservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{9FA52A1E-B07F-4E73-B2F5-BC119B81EB0F}|SalonBookingSystem\\SalonBookingSystem.csproj|solutionrelative:salonbookingsystem\\dataaccess\\services\\reviewservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{9FA52A1E-B07F-4E73-B2F5-BC119B81EB0F}|SalonBookingSystem\\SalonBookingSystem.csproj|c:\\users\\haris duggal\\source\\repos\\salonbookingsolution\\salonbookingsystem\\components\\layout\\mainlayout.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{9FA52A1E-B07F-4E73-B2F5-BC119B81EB0F}|SalonBookingSystem\\SalonBookingSystem.csproj|solutionrelative:salonbookingsystem\\components\\layout\\mainlayout.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+      "AbsoluteMoniker": "D:0:0:{9FA52A1E-B07F-4E73-B2F5-BC119B81EB0F}|SalonBookingSystem\\SalonBookingSystem.csproj|c:\\users\\haris duggal\\source\\repos\\salonbookingsolution\\salonbookingsystem\\dataaccess\\services\\serviceservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{9FA52A1E-B07F-4E73-B2F5-BC119B81EB0F}|SalonBookingSystem\\SalonBookingSystem.csproj|solutionrelative:salonbookingsystem\\dataaccess\\services\\serviceservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{9FA52A1E-B07F-4E73-B2F5-BC119B81EB0F}|SalonBookingSystem\\SalonBookingSystem.csproj|c:\\users\\haris duggal\\source\\repos\\salonbookingsolution\\salonbookingsystem\\dataaccess\\services\\bookingservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{9FA52A1E-B07F-4E73-B2F5-BC119B81EB0F}|SalonBookingSystem\\SalonBookingSystem.csproj|solutionrelative:salonbookingsystem\\dataaccess\\services\\bookingservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{9FA52A1E-B07F-4E73-B2F5-BC119B81EB0F}|SalonBookingSystem\\SalonBookingSystem.csproj|c:\\users\\haris duggal\\source\\repos\\salonbookingsolution\\salonbookingsystem\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{9FA52A1E-B07F-4E73-B2F5-BC119B81EB0F}|SalonBookingSystem\\SalonBookingSystem.csproj|solutionrelative:salonbookingsystem\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{9FA52A1E-B07F-4E73-B2F5-BC119B81EB0F}|SalonBookingSystem\\SalonBookingSystem.csproj|c:\\users\\haris duggal\\source\\repos\\salonbookingsolution\\salonbookingsystem\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{9FA52A1E-B07F-4E73-B2F5-BC119B81EB0F}|SalonBookingSystem\\SalonBookingSystem.csproj|solutionrelative:salonbookingsystem\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{9FA52A1E-B07F-4E73-B2F5-BC119B81EB0F}|SalonBookingSystem\\SalonBookingSystem.csproj|c:\\users\\haris duggal\\source\\repos\\salonbookingsolution\\salonbookingsystem\\dataaccess\\dbhelper.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{9FA52A1E-B07F-4E73-B2F5-BC119B81EB0F}|SalonBookingSystem\\SalonBookingSystem.csproj|solutionrelative:salonbookingsystem\\dataaccess\\dbhelper.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -58,103 +54,20 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 8,
+          "SelectedChildIndex": 1,
           "Children": [
             {
               "$type": "Document",
               "DocumentIndex": 2,
-              "Title": "LandingPage.razor",
-              "DocumentMoniker": "C:\\Users\\Haris Duggal\\source\\repos\\SalonBookingSolution\\SalonBookingSystem\\Components\\Pages\\LandingPage.razor",
-              "RelativeDocumentMoniker": "SalonBookingSystem\\Components\\Pages\\LandingPage.razor",
-              "ToolTip": "C:\\Users\\Haris Duggal\\source\\repos\\SalonBookingSolution\\SalonBookingSystem\\Components\\Pages\\LandingPage.razor",
-              "RelativeToolTip": "SalonBookingSystem\\Components\\Pages\\LandingPage.razor",
-              "ViewState": "AgIAANgAAAAAAAAAAAAAAEIBAAAAAAAAAAAAAA==",
+              "Title": "_Imports.razor",
+              "DocumentMoniker": "C:\\Users\\Haris Duggal\\source\\repos\\SalonBookingSolution\\SalonBookingSystem\\Components\\_Imports.razor",
+              "RelativeDocumentMoniker": "SalonBookingSystem\\Components\\_Imports.razor",
+              "ToolTip": "C:\\Users\\Haris Duggal\\source\\repos\\SalonBookingSolution\\SalonBookingSystem\\Components\\_Imports.razor",
+              "RelativeToolTip": "SalonBookingSystem\\Components\\_Imports.razor",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAsAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-07-03T05:02:20.448Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "Program.cs",
-              "DocumentMoniker": "C:\\Users\\Haris Duggal\\source\\repos\\SalonBookingSolution\\SalonBookingSystem\\Program.cs",
-              "RelativeDocumentMoniker": "SalonBookingSystem\\Program.cs",
-              "ToolTip": "C:\\Users\\Haris Duggal\\source\\repos\\SalonBookingSolution\\SalonBookingSystem\\Program.cs",
-              "RelativeToolTip": "SalonBookingSystem\\Program.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABkAAAASAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-03T04:58:46.455Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 6,
-              "Title": "UserService.cs",
-              "DocumentMoniker": "C:\\Users\\Haris Duggal\\source\\repos\\SalonBookingSolution\\SalonBookingSystem\\DataAccess\\Services\\UserService.cs",
-              "RelativeDocumentMoniker": "SalonBookingSystem\\DataAccess\\Services\\UserService.cs",
-              "ToolTip": "C:\\Users\\Haris Duggal\\source\\repos\\SalonBookingSolution\\SalonBookingSystem\\DataAccess\\Services\\UserService.cs",
-              "RelativeToolTip": "SalonBookingSystem\\DataAccess\\Services\\UserService.cs",
-              "ViewState": "AgIAABcAAAAAAAAAAAAwwCIAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-03T04:57:16.274Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 7,
-              "Title": "StaffService.cs",
-              "DocumentMoniker": "C:\\Users\\Haris Duggal\\source\\repos\\SalonBookingSolution\\SalonBookingSystem\\DataAccess\\Services\\StaffService.cs",
-              "RelativeDocumentMoniker": "SalonBookingSystem\\DataAccess\\Services\\StaffService.cs",
-              "ToolTip": "C:\\Users\\Haris Duggal\\source\\repos\\SalonBookingSolution\\SalonBookingSystem\\DataAccess\\Services\\StaffService.cs",
-              "RelativeToolTip": "SalonBookingSystem\\DataAccess\\Services\\StaffService.cs",
-              "ViewState": "AgIAABIAAAAAAAAAAAAowCIAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-03T04:56:59.398Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 9,
-              "Title": "ServiceService.cs",
-              "DocumentMoniker": "C:\\Users\\Haris Duggal\\source\\repos\\SalonBookingSolution\\SalonBookingSystem\\DataAccess\\Services\\ServiceService.cs",
-              "RelativeDocumentMoniker": "SalonBookingSystem\\DataAccess\\Services\\ServiceService.cs",
-              "ToolTip": "C:\\Users\\Haris Duggal\\source\\repos\\SalonBookingSolution\\SalonBookingSystem\\DataAccess\\Services\\ServiceService.cs",
-              "RelativeToolTip": "SalonBookingSystem\\DataAccess\\Services\\ServiceService.cs",
-              "ViewState": "AgIAAA8AAAAAAAAAAAA5wCIAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-03T04:56:25.371Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 10,
-              "Title": "ReviewService.cs",
-              "DocumentMoniker": "C:\\Users\\Haris Duggal\\source\\repos\\SalonBookingSolution\\SalonBookingSystem\\DataAccess\\Services\\ReviewService.cs",
-              "RelativeDocumentMoniker": "SalonBookingSystem\\DataAccess\\Services\\ReviewService.cs",
-              "ToolTip": "C:\\Users\\Haris Duggal\\source\\repos\\SalonBookingSolution\\SalonBookingSystem\\DataAccess\\Services\\ReviewService.cs",
-              "RelativeToolTip": "SalonBookingSystem\\DataAccess\\Services\\ReviewService.cs",
-              "ViewState": "AgIAAA8AAAAAAAAAAAA5wCIAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-03T04:56:07.55Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "BookingService.cs",
-              "DocumentMoniker": "C:\\Users\\Haris Duggal\\source\\repos\\SalonBookingSolution\\SalonBookingSystem\\DataAccess\\Services\\BookingService.cs",
-              "RelativeDocumentMoniker": "SalonBookingSystem\\DataAccess\\Services\\BookingService.cs",
-              "ToolTip": "C:\\Users\\Haris Duggal\\source\\repos\\SalonBookingSolution\\SalonBookingSystem\\DataAccess\\Services\\BookingService.cs",
-              "RelativeToolTip": "SalonBookingSystem\\DataAccess\\Services\\BookingService.cs",
-              "ViewState": "AgIAAAMAAAAAAAAAAAAAACIAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-03T04:55:44.365Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 8,
-              "Title": "SkillService.cs",
-              "DocumentMoniker": "C:\\Users\\Haris Duggal\\source\\repos\\SalonBookingSolution\\SalonBookingSystem\\DataAccess\\Services\\SkillService.cs",
-              "RelativeDocumentMoniker": "SalonBookingSystem\\DataAccess\\Services\\SkillService.cs",
-              "ToolTip": "C:\\Users\\Haris Duggal\\source\\repos\\SalonBookingSolution\\SalonBookingSystem\\DataAccess\\Services\\SkillService.cs",
-              "RelativeToolTip": "SalonBookingSystem\\DataAccess\\Services\\SkillService.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-30T08:15:37.394Z"
+              "WhenOpened": "2025-07-08T15:21:26.692Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
@@ -164,46 +77,127 @@
               "RelativeDocumentMoniker": "SalonBookingSystem\\Components\\Pages\\Admin.razor",
               "ToolTip": "C:\\Users\\Haris Duggal\\source\\repos\\SalonBookingSolution\\SalonBookingSystem\\Components\\Pages\\Admin.razor",
               "RelativeToolTip": "SalonBookingSystem\\Components\\Pages\\Admin.razor",
-              "ViewState": "AgIAAGICAAAAAAAAAAAlwMcCAAAEAAAAAAAAAA==",
+              "ViewState": "AgIAAK8CAAAAAAAAAAAAAAYAAAAfAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-06-29T23:11:21.437Z",
+              "WhenOpened": "2025-07-08T15:19:57.832Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 1,
-              "Title": "Home.razor",
-              "DocumentMoniker": "C:\\Users\\Haris Duggal\\source\\repos\\SalonBookingSolution\\SalonBookingSystem\\Components\\Pages\\Home.razor",
-              "RelativeDocumentMoniker": "SalonBookingSystem\\Components\\Pages\\Home.razor",
-              "ToolTip": "C:\\Users\\Haris Duggal\\source\\repos\\SalonBookingSolution\\SalonBookingSystem\\Components\\Pages\\Home.razor",
-              "RelativeToolTip": "SalonBookingSystem\\Components\\Pages\\Home.razor",
-              "ViewState": "AgIAAJgBAAAAAAAAAAAAALkBAAAFAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-06-29T22:09:05.869Z"
+              "Title": "UserService.cs",
+              "DocumentMoniker": "C:\\Users\\Haris Duggal\\source\\repos\\SalonBookingSolution\\SalonBookingSystem\\DataAccess\\Services\\UserService.cs",
+              "RelativeDocumentMoniker": "SalonBookingSystem\\DataAccess\\Services\\UserService.cs",
+              "ToolTip": "C:\\Users\\Haris Duggal\\source\\repos\\SalonBookingSolution\\SalonBookingSystem\\DataAccess\\Services\\UserService.cs",
+              "RelativeToolTip": "SalonBookingSystem\\DataAccess\\Services\\UserService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAA7AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-08T15:19:08.672Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "StaffService.cs",
+              "DocumentMoniker": "C:\\Users\\Haris Duggal\\source\\repos\\SalonBookingSolution\\SalonBookingSystem\\DataAccess\\Services\\StaffService.cs",
+              "RelativeDocumentMoniker": "SalonBookingSystem\\DataAccess\\Services\\StaffService.cs",
+              "ToolTip": "C:\\Users\\Haris Duggal\\source\\repos\\SalonBookingSolution\\SalonBookingSystem\\DataAccess\\Services\\StaffService.cs",
+              "RelativeToolTip": "SalonBookingSystem\\DataAccess\\Services\\StaffService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAMAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-08T15:18:43.669Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 4,
-              "Title": "Bookings.razor",
-              "DocumentMoniker": "C:\\Users\\Haris Duggal\\source\\repos\\SalonBookingSolution\\SalonBookingSystem\\Components\\Pages\\Bookings.razor",
-              "RelativeDocumentMoniker": "SalonBookingSystem\\Components\\Pages\\Bookings.razor",
-              "ToolTip": "C:\\Users\\Haris Duggal\\source\\repos\\SalonBookingSolution\\SalonBookingSystem\\Components\\Pages\\Bookings.razor",
-              "RelativeToolTip": "SalonBookingSystem\\Components\\Pages\\Bookings.razor",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAJcCAAABAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-06-29T22:14:56.979Z"
+              "Title": "SkillService.cs",
+              "DocumentMoniker": "C:\\Users\\Haris Duggal\\source\\repos\\SalonBookingSolution\\SalonBookingSystem\\DataAccess\\Services\\SkillService.cs",
+              "RelativeDocumentMoniker": "SalonBookingSystem\\DataAccess\\Services\\SkillService.cs",
+              "ToolTip": "C:\\Users\\Haris Duggal\\source\\repos\\SalonBookingSolution\\SalonBookingSystem\\DataAccess\\Services\\SkillService.cs",
+              "RelativeToolTip": "SalonBookingSystem\\DataAccess\\Services\\SkillService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAA4AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-08T15:18:00.543Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 11,
-              "Title": "MainLayout.razor",
-              "DocumentMoniker": "C:\\Users\\Haris Duggal\\source\\repos\\SalonBookingSolution\\SalonBookingSystem\\Components\\Layout\\MainLayout.razor",
-              "RelativeDocumentMoniker": "SalonBookingSystem\\Components\\Layout\\MainLayout.razor",
-              "ToolTip": "C:\\Users\\Haris Duggal\\source\\repos\\SalonBookingSolution\\SalonBookingSystem\\Components\\Layout\\MainLayout.razor",
-              "RelativeToolTip": "SalonBookingSystem\\Components\\Layout\\MainLayout.razor",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAdAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-06-29T22:05:24.768Z"
+              "DocumentIndex": 6,
+              "Title": "ServiceService.cs",
+              "DocumentMoniker": "C:\\Users\\Haris Duggal\\source\\repos\\SalonBookingSolution\\SalonBookingSystem\\DataAccess\\Services\\ServiceService.cs",
+              "RelativeDocumentMoniker": "SalonBookingSystem\\DataAccess\\Services\\ServiceService.cs",
+              "ToolTip": "C:\\Users\\Haris Duggal\\source\\repos\\SalonBookingSolution\\SalonBookingSystem\\DataAccess\\Services\\ServiceService.cs",
+              "RelativeToolTip": "SalonBookingSystem\\DataAccess\\Services\\ServiceService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-08T15:17:30.538Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "ReviewService.cs",
+              "DocumentMoniker": "C:\\Users\\Haris Duggal\\source\\repos\\SalonBookingSolution\\SalonBookingSystem\\DataAccess\\Services\\ReviewService.cs",
+              "RelativeDocumentMoniker": "SalonBookingSystem\\DataAccess\\Services\\ReviewService.cs",
+              "ToolTip": "C:\\Users\\Haris Duggal\\source\\repos\\SalonBookingSolution\\SalonBookingSystem\\DataAccess\\Services\\ReviewService.cs",
+              "RelativeToolTip": "SalonBookingSystem\\DataAccess\\Services\\ReviewService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAA6AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-08T15:15:18.278Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "BookingService.cs",
+              "DocumentMoniker": "C:\\Users\\Haris Duggal\\source\\repos\\SalonBookingSolution\\SalonBookingSystem\\DataAccess\\Services\\BookingService.cs",
+              "RelativeDocumentMoniker": "SalonBookingSystem\\DataAccess\\Services\\BookingService.cs",
+              "ToolTip": "C:\\Users\\Haris Duggal\\source\\repos\\SalonBookingSolution\\SalonBookingSystem\\DataAccess\\Services\\BookingService.cs",
+              "RelativeToolTip": "SalonBookingSystem\\DataAccess\\Services\\BookingService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAkAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-08T15:14:27.549Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "DBHelper.cs",
+              "DocumentMoniker": "C:\\Users\\Haris Duggal\\source\\repos\\SalonBookingSolution\\SalonBookingSystem\\DataAccess\\DBHelper.cs",
+              "RelativeDocumentMoniker": "SalonBookingSystem\\DataAccess\\DBHelper.cs",
+              "ToolTip": "C:\\Users\\Haris Duggal\\source\\repos\\SalonBookingSolution\\SalonBookingSystem\\DataAccess\\DBHelper.cs",
+              "RelativeToolTip": "SalonBookingSystem\\DataAccess\\DBHelper.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABgAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-08T15:10:29.342Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "appsettings.json",
+              "DocumentMoniker": "C:\\Users\\Haris Duggal\\source\\repos\\SalonBookingSolution\\SalonBookingSystem\\appsettings.json",
+              "RelativeDocumentMoniker": "SalonBookingSystem\\appsettings.json",
+              "ToolTip": "C:\\Users\\Haris Duggal\\source\\repos\\SalonBookingSolution\\SalonBookingSystem\\appsettings.json",
+              "RelativeToolTip": "SalonBookingSystem\\appsettings.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2025-07-08T15:09:23.23Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Users\\Haris Duggal\\source\\repos\\SalonBookingSolution\\SalonBookingSystem\\Program.cs",
+              "RelativeDocumentMoniker": "SalonBookingSystem\\Program.cs",
+              "ToolTip": "C:\\Users\\Haris Duggal\\source\\repos\\SalonBookingSolution\\SalonBookingSystem\\Program.cs",
+              "RelativeToolTip": "SalonBookingSystem\\Program.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABkAAAASAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-03T04:58:46.455Z",
+              "EditorCaption": ""
             }
           ]
         }

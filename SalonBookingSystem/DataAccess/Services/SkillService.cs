@@ -7,9 +7,10 @@ namespace SalonBookingSystem.DataAccess.Services
     {
         private readonly IMongoCollection<Skill> _skills;
 
-        public SkillService()
+        public SkillService(IConfiguration configuration)
         {
-            var database = DBHelper.GetDatabase();
+            var database = DBHelper.GetDatabase(configuration);
+
             _skills = database.GetCollection<Skill>("skills");
         }
 

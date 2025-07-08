@@ -39,3 +39,4 @@ C:\Users\Haris Duggal\source\repos\SalonBookingSolution\SalonBookingSystem\obj\D
 C:\Users\Haris Duggal\source\repos\SalonBookingSolution\SalonBookingSystem\obj\Debug\net8.0\SalonBookingSystem.pdb
 C:\Users\Haris Duggal\source\repos\SalonBookingSolution\SalonBookingSystem\obj\Debug\net8.0\SalonBookingSystem.genruntimeconfig.cache
 C:\Users\Haris Duggal\source\repos\SalonBookingSolution\SalonBookingSystem\obj\Debug\net8.0\ref\SalonBookingSystem.dll
+C:\Users\Haris Duggal\source\repos\SalonBookingSolution\SalonBookingSystem\obj\Debug\net8.0\SalonBookingSystem.sourcelink.json
