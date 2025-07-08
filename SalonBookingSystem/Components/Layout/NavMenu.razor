@@ -1,0 +1,17 @@
+﻿<nav class="bg-gray-800 text-white px-4 py-3 flex justify-between items-center">
+    <div class="font-bold text-xl">Glamour Salon</div>
+    <div class="space-x-6">
+        <NavLink class="hover:underline" href="/">Home</NavLink>
+        <NavLink class="hover:underline" href="/bookings">Bookings</NavLink>
+        <NavLink class="hover:underline" href="/admin">Admin</NavLink>
+        <button class="hover:underline" @onclick="Logout">Logout</button>
+    </div>
+</nav>
+
+@code {
+    private void Logout()
+    {
+        // Later: clear user state and redirect to landing page
+        Console.WriteLine("Logout clicked");
+    }
+}

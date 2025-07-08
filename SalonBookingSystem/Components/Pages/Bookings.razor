@@ -1,0 +1,664 @@
+﻿@page "/bookings"
+@inject BookingService BookingService
+@inject ServiceService ServiceService
+@inject StaffService StaffService
+@inject ReviewService ReviewService
+@inject UserStateService UserStateService
+@inject NavigationManager Navigation
+@inject IJSRuntime JSRuntime
+@rendermode InteractiveServer
+
+@if (UserStateService.CurrentUser == null)
+{
+    <div class="d-flex justify-content-center align-items-center" style="height: 100vh;">
+        <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+    </div>
+}
+else
+{
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-grad">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="/home">
+                <i class="fas fa-cut me-2"></i>Glamour Studio
+            </a>
+
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/home">
+                            <i class="fas fa-home me-1"></i>Home
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/bookings">
+                            <i class="fas fa-calendar-alt me-1"></i>Bookings
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/admin">
+                            <i class="fas fa-cog me-1"></i>Admin
+                        </a>
+                    </li>
+                </ul>
+
+                <div class="navbar-nav">
+
+                    <button style="border: none; border-radius: 25px; padding: 10px 20px; color: #ddd;" class="badge-danger" @onclick="Logout">Logout</button>
+                            
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container mt-4">
+        <div class="row">
+            <div class="col-12">
+                <div class="page-header mb-4">
+                    <h1 class="display-5 fw-bold text-primary">
+                        <i class="fas fa-calendar-alt me-2"></i>Your Bookings
+                    </h1>
+                    <p class="text-muted">Manage and review your salon appointments</p>
+                </div>
+            </div>
+        </div>
+
+        @if (isLoading)
+        {
+            <div class="row justify-content-center">
+                <div class="col-auto">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">Loading bookings...</span>
+                    </div>
+                </div>
+            </div>
+        }
+        else if (userBookings == null || !userBookings.Any())
+        {
+            <div class="row justify-content-center">
+                <div class="col-md-6 text-center">
+                    <div class="empty-state">
+                        <i class="fas fa-calendar-times fa-5x text-muted mb-3"></i>
+                        <h3 class="text-muted">No Bookings Yet</h3>
+                        <p class="text-muted mb-4">You haven't made any appointments yet. Book your first service now!</p>
+                        <a href="/home" class="btn btn-primary btn-lg">
+                            <i class="fas fa-plus me-1"></i>Book a Service
+                        </a>
+                    </div>
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="row">
+                @foreach (var booking in userBookings.OrderByDescending(b => b.Date).ThenByDescending(b => b.Time))
+                {
+                    <div class="col-lg-6 col-xl-4 mb-4">
+                        <div class="card booking-card h-100">
+                            <div class="card-header">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <h6 class="mb-0 fw-bold">
+                                        @GetServiceName(booking.ServiceId)
+                                    </h6>
+                                    <span class="badge @GetStatusBadgeClass(booking.Status?.Category)">
+                                        @booking.Status?.Category
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div class="card-body">
+                                <div class="booking-details">
+                                    <div class="detail-item mb-2">
+                                        <i class="fas fa-calendar text-primary me-2"></i>
+                                        <strong>Date:</strong> @FormatDate(booking.Date)
+                                    </div>
+
+                                    <div class="detail-item mb-2">
+                                        <i class="fas fa-clock text-primary me-2"></i>
+                                        <strong>Time:</strong> @booking.Time
+                                    </div>
+
+                                    <div class="detail-item mb-2">
+                                        <i class="fas fa-user-tie text-primary me-2"></i>
+                                        <strong>Staff:</strong> @GetStaffName(booking.StaffId)
+                                    </div>
+
+                                    <div class="detail-item mb-2">
+                                        <i class="fas fa-dollar-sign text-success me-2"></i>
+                                        <strong>Amount:</strong> $@booking.Payment?.Amount
+                                    </div>
+
+                                    <div class="detail-item mb-2">
+                                        <i class="fas fa-credit-card text-primary me-2"></i>
+                                        <strong>Payment:</strong> @booking.Payment?.Method
+                                        <span class="badge @GetPaymentStatusBadgeClass(booking.Payment?.Status) ms-1">
+                                            @booking.Payment?.Status
+                                        </span>
+                                    </div>
+
+                                    @if (!string.IsNullOrEmpty(booking.Status?.Description))
+                                    {
+                                        <div class="detail-item mb-3">
+                                            <i class="fas fa-info-circle text-info me-2"></i>
+                                            <small class="text-muted">@booking.Status.Description</small>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+
+                            <div class="card-footer bg-transparent">
+                                @if (booking.Status?.Category?.ToLower() == "completed")
+                                {
+                                    <button class="btn btn-outline-warning btn-sm w-100" @onclick="() => ShowReviewModal(booking)">
+                                        <i class="fas fa-star me-1"></i>Drop a Review
+                                    </button>
+                                }
+                                else if (booking.Status?.Category?.ToLower() == "pending")
+                                {
+                                    <button class="btn btn-outline-danger btn-sm w-100" @onclick="() => CancelBooking(booking)">
+                                        <i class="fas fa-times me-1"></i>Cancel Booking
+                                    </button>
+                                }
+                                else
+                                {
+                                    <button class="btn btn-outline-secondary btn-sm w-100" disabled>
+                                        <i class="fas fa-clock me-1"></i>@booking.Status?.Category
+                                    </button>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+    </div>
+
+    <!-- Review Modal -->
+    @if (showReviewModal && selectedBooking != null)
+    {
+        <div class="modal fade show d-block" tabindex="-1" style="background-color: rgba(0,0,0,0.5);">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content review-modal">
+                    <div class="modal-header">
+                        <h5 class="modal-title">
+                            <i class="fas fa-star text-warning me-2"></i>
+                            Rate Your Experience
+                        </h5>
+                        <button type="button" class="btn-close" @onclick="CloseReviewModal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="text-center mb-4">
+                            <h6 class="mb-1">@GetServiceName(selectedBooking.ServiceId)</h6>
+                            <small class="text-muted">with @GetStaffName(selectedBooking.StaffId)</small>
+                        </div>
+
+                        <form @onsubmit="SubmitReview" @onsubmit:preventDefault="true">
+                            <!-- Star Rating -->
+                            <div class="rating-section mb-4">
+                                <label class="form-label fw-bold">How was your experience?</label>
+                                <div class="star-rating d-flex justify-content-center">
+                                    @for (int i = 1; i <= 5; i++)
+                                    {
+                                        int starValue = i;
+                                        <button type="button"
+                                                class="star-btn @(starValue <= selectedRating ? "selected" : "")"
+                                                @onclick="() => SetRating(starValue)"
+                                                @onmouseover="() => HoverRating(starValue)"
+                                                @onmouseout="() => HoverRating(0)">
+                                            <i class="fas fa-star"></i>
+                                        </button>
+                                    }
+                                </div>
+                                <div class="text-center mt-2">
+                                    <small class="text-muted">@GetRatingText(selectedRating)</small>
+                                </div>
+                            </div>
+
+                            <!-- Review Text -->
+                            <div class="mb-4">
+                                <label class="form-label fw-bold">Tell us more about your experience</label>
+                                <textarea class="form-control"
+                                          rows="4"
+                                          placeholder="Share your thoughts about the service, staff, and overall experience..."
+                                          @bind="reviewText"
+                                          maxlength="500"></textarea>
+                                <div class="form-text">@reviewText.Length/500 characters</div>
+                            </div>
+
+                            <!-- Submit Buttons -->
+                            <div class="d-flex gap-2">
+                                <button type="button" class="btn btn-secondary flex-fill" @onclick="CloseReviewModal">
+                                    Cancel
+                                </button>
+                                <button type="submit"
+                                        class="btn btn-primary flex-fill"
+                                        disabled="@(selectedRating == 0 || isSubmittingReview)">
+                                    @if (isSubmittingReview)
+                                    {
+                                        <span class="spinner-border spinner-border-sm me-2"></span>
+                                        <span>Submitting...</span>
+                                    }
+                                    else
+                                    {
+                                        <i class="fas fa-paper-plane me-1"></i>
+                                        <span>Submit Review</span>
+                                    }
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+}
+
+<style>
+    .bg-grad {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    }
+
+    .page-header {
+        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        padding: 2rem;
+        border-radius: 15px;
+        border-left: 5px solid #667eea;
+    }
+
+    .booking-card {
+        border: none;
+        border-radius: 15px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+        overflow: hidden;
+    }
+
+        .booking-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        }
+
+    .card-header {
+        background: linear-gradient(45deg, #f8f9fa, #e9ecef);
+        border-bottom: 1px solid #dee2e6;
+        padding: 1rem 1.25rem;
+    }
+
+    .detail-item {
+        display: flex;
+        align-items: center;
+        font-size: 0.9rem;
+    }
+
+        .detail-item i {
+            width: 20px;
+            text-align: center;
+        }
+
+    .badge {
+        font-size: 0.75rem;
+        padding: 0.5em 0.75em;
+    }
+
+    .badge-success {
+        background-color: #28a745;
+    }
+
+    .badge-warning {
+        background-color: #ffc107;
+        color: #212529;
+    }
+
+    .badge-danger {
+        background-color: #dc3545;
+    }
+
+    .badge-info {
+        background-color: #17a2b8;
+    }
+
+    .badge-secondary {
+        background-color: #6c757d;
+    }
+
+    .empty-state {
+        padding: 3rem 2rem;
+    }
+
+    .navbar-brand {
+        font-size: 1.5rem;
+    }
+
+    .nav-link {
+        font-weight: 500;
+        transition: all 0.3s ease;
+    }
+
+        .nav-link:hover {
+            transform: translateY(-2px);
+        }
+
+    .btn {
+        border-radius: 10px;
+        transition: all 0.3s ease;
+    }
+
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+
+    .card-footer {
+        padding: 1rem 1.25rem;
+    }
+
+    /* Review Modal Styles */
+    .review-modal {
+        border: none;
+        border-radius: 20px;
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+    }
+
+        .review-modal .modal-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 20px 20px 0 0;
+            border-bottom: none;
+            padding: 1.5rem;
+        }
+
+        .review-modal .modal-body {
+            padding: 2rem;
+        }
+
+    .rating-section {
+        text-align: center;
+    }
+
+    .star-rating {
+        gap: 0.5rem;
+        margin: 1rem 0;
+    }
+
+    .star-btn {
+        background: none;
+        background-color:#ffc105;
+        border: none;
+        font-size: 2rem;
+        color: #ffc105;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        padding: 7px;
+        border-radius: 50%;
+    }
+
+        .star-btn:hover {
+            color: #ffc107;
+            transform: scale(1.2);
+        }
+
+        .star-btn.selected {
+            color: #ffc107;
+        }
+
+        .star-btn:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(255, 193, 7, 0.3);
+        }
+
+    .form-control {
+        border-radius: 10px;
+        border: 2px solid #e9ecef;
+        transition: all 0.3s ease;
+    }
+
+        .form-control:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+        }
+
+    .btn-close {
+        background: none;
+        border: none;
+        color: white;
+        font-size: 1.5rem;
+        opacity: 0.8;
+    }
+
+        .btn-close:hover {
+            opacity: 1;
+        }
+
+</style>
+
+@code {
+    private List<Booking>? userBookings;
+    private List<Service>? services;
+    private List<Staff>? staff;
+    private bool isLoading = true;
+    private Booking? selectedBooking;
+
+    
+    private bool showReviewModal = false;
+    private int selectedRating = 0;
+    private int hoverRating = 0;
+    private string reviewText = "";
+    private bool isSubmittingReview = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (UserStateService.CurrentUser == null)
+        {
+            Navigation.NavigateTo("/");
+            return;
+        }
+
+        await LoadData();
+    }
+
+    private async Task LoadData()
+    {
+        try
+        {
+            isLoading = true;
+
+            var bookingsTask = BookingService.GetAllAsync();
+            var servicesTask = ServiceService.GetAllAsync();
+            var staffTask = StaffService.GetAllAsync();
+
+            await Task.WhenAll(bookingsTask, servicesTask, staffTask);
+
+            var allBookings = await bookingsTask;
+            services = await servicesTask;
+            staff = await staffTask;
+
+            userBookings = allBookings?.Where(b => b.UserId == UserStateService.CurrentUser.Id).ToList();
+        }
+        catch (Exception ex)
+        {
+            await JSRuntime.InvokeVoidAsync("console.error", "Error loading bookings:", ex.Message);
+        }
+        finally
+        {
+            isLoading = false;
+        }
+    }
+
+    private string GetServiceName(string? serviceId)
+    {
+        if (string.IsNullOrEmpty(serviceId) || services == null)
+            return "Unknown Service";
+
+        var service = services.FirstOrDefault(s => s.Id == serviceId);
+        return service?.Name ?? "Unknown Service";
+    }
+
+    private string GetStaffName(string? staffId)
+    {
+        if (string.IsNullOrEmpty(staffId) || staff == null)
+            return "Not Assigned";
+
+        var staffMember = staff.FirstOrDefault(s => s.Id == staffId);
+        return staffMember?.Name ?? "Not Assigned";
+    }
+
+    private string FormatDate(string? date)
+    {
+        if (string.IsNullOrEmpty(date))
+            return "Not Set";
+
+        if (DateTime.TryParse(date, out var parsedDate))
+        {
+            return parsedDate.ToString("MMM dd, yyyy");
+        }
+
+        return date;
+    }
+
+    private string GetStatusBadgeClass(string? status)
+    {
+        return status?.ToLower() switch
+        {
+            "completed" => "badge-success",
+            "pending" => "badge-warning",
+            "cancelled" => "badge-danger",
+            "in-progress" => "badge-info",
+            _ => "badge-secondary"
+        };
+    }
+
+    private string GetPaymentStatusBadgeClass(string? status)
+    {
+        return status?.ToLower() switch
+        {
+            "paid" => "badge-success",
+            "pending" => "badge-warning",
+            "failed" => "badge-danger",
+            _ => "badge-secondary"
+        };
+    }
+
+    private void ShowReviewModal(Booking booking)
+    {
+        selectedBooking = booking;
+        selectedRating = 0;
+        hoverRating = 0;
+        reviewText = "";
+        showReviewModal = true;
+    }
+
+    private void CloseReviewModal()
+    {
+        showReviewModal = false;
+        selectedBooking = null;
+        selectedRating = 0;
+        hoverRating = 0;
+        reviewText = "";
+        isSubmittingReview = false;
+    }
+
+    private void SetRating(int rating)
+    {
+        selectedRating = rating;
+    }
+
+    private void HoverRating(int rating)
+    {
+        hoverRating = rating;
+        StateHasChanged();
+    }
+
+    private string GetRatingText(int rating)
+    {
+        return rating switch
+        {
+            1 => "Poor - Not satisfied",
+            2 => "Fair - Below expectations",
+            3 => "Good - Meets expectations",
+            4 => "Very Good - Exceeds expectations",
+            5 => "Excellent - Outstanding service",
+            _ => "Please select a rating"
+        };
+    }
+
+    private async Task SubmitReview()
+    {
+        if (selectedBooking == null || selectedRating == 0)
+            return;
+
+        try
+        {
+            isSubmittingReview = true;
+
+            var review = new Review
+                {
+                    UserId = UserStateService.CurrentUser.Id,
+                    StaffId = selectedBooking.StaffId,
+                    ServiceId = selectedBooking.ServiceId,
+                    Date = DateTime.Now.ToString("yyyy-MM-dd"),
+                    Time = DateTime.Now.ToString("HH:mm"),
+                    Status = new StatusDetail
+                    {
+                        Category = "Submitted",
+                        Description = $"Rating: {selectedRating}/5 stars. {reviewText.Trim()}"
+                    },
+                    Payment = new PaymentDetail
+                    {
+                        Amount = selectedRating,
+                        Method = "Review",
+                        Status = "Completed"
+                    }
+                };
+
+            await ReviewService.AddAsync(review);
+
+            await JSRuntime.InvokeVoidAsync("alert", "Thank you for your review! Your feedback helps us improve our services.");
+
+            CloseReviewModal();
+        }
+        catch (Exception ex)
+        {
+            await JSRuntime.InvokeVoidAsync("alert", "Error submitting review. Please try again.");
+            await JSRuntime.InvokeVoidAsync("console.error", "Review submission error:", ex.Message);
+        }
+        finally
+        {
+            isSubmittingReview = false;
+        }
+    }
+
+    private async Task CancelBooking(Booking booking)
+    {
+        var confirmed = await JSRuntime.InvokeAsync<bool>("confirm", "Are you sure you want to cancel this booking?");
+
+        if (confirmed)
+        {
+            try
+            {
+                booking.Status.Category = "Cancelled";
+                booking.Status.Description = "Booking cancelled by customer";
+
+                await BookingService.UpdateAsync(booking);
+                await LoadData();
+
+                await JSRuntime.InvokeVoidAsync("alert", "Booking cancelled successfully!");
+            }
+            catch (Exception ex)
+            {
+                await JSRuntime.InvokeVoidAsync("alert", "Error cancelling booking. Please try again.");
+            }
+        }
+    }
+
+    private void Logout()
+    {
+        UserStateService.ClearUser();
+        Navigation.NavigateTo("/");
+    }
+}

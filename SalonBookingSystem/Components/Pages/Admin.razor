@@ -1,0 +1,1034 @@
+﻿@page "/admin"
+@inject ServiceService ServiceService
+@inject StaffService StaffService
+@inject BookingService BookingService
+@inject ReviewService ReviewService
+@inject SkillService SkillService
+@inject UserStateService UserStateService
+@inject NavigationManager Navigation
+@inject IJSRuntime JSRuntime
+@rendermode InteractiveServer
+
+@if (UserStateService.CurrentUser == null || UserStateService.CurrentUser.Role != "Admin")
+{
+    <div class="d-flex justify-content-center align-items-center" style="height: 100vh;">
+        <div class="alert alert-danger text-center">
+            <i class="fas fa-exclamation-triangle fa-3x mb-3"></i>
+            <h4>Access Denied</h4>
+            <p>You don't have permission to access this page.</p>
+            <button class="btn btn-primary" @onclick="@(() => Navigation.NavigateTo("/home"))">
+                Go to Home
+            </button>
+        </div>
+    </div>
+}
+else
+{
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-gradient">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="/home">
+                <i class="fas fa-cut me-2"></i>Glamour Studio - Admin
+            </a>
+
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/home">
+                            <i class="fas fa-home me-1"></i>Home
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/bookings">
+                            <i class="fas fa-calendar-alt me-1"></i>Bookings
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/admin">
+                            <i class="fas fa-cog me-1"></i>Admin
+                        </a>
+                    </li>
+                </ul>
+
+                <div class="navbar-nav">
+                    <div class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                            <i class="fas fa-user me-1"></i>@UserStateService.CurrentUser.Name
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <button class="dropdown-item" @onclick="Logout">
+                                    <i class="fas fa-sign-out-alt me-1"></i>Logout
+                                </button>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container-fluid mt-4">
+        <div class="row">
+            <div class="col-12">
+                <div class="welcome-section mb-4">
+                    <h1 class="display-5 text-center mb-2">Admin Dashboard</h1>
+                    <p class="lead text-center">Manage your salon operations</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab Navigation -->
+        <ul class="nav nav-pills nav-fill mb-4" id="adminTabs" role="tablist">
+    <li class="nav-item" role="presentation">
+        <button class="nav-link @(activeTab == "staff" ? "active" : "")" @onclick="@(() => SetActiveTab("staff"))">
+            <i class="fas fa-users me-2"></i>Staff Management
+        </button>
+    </li>
+    <li class="nav-item" role="presentation">
+        <button class="nav-link @(activeTab == "services" ? "active" : "")" @onclick="@(() => SetActiveTab("services"))">
+            <i class="fas fa-concierge-bell me-2"></i>Services Management
+        </button>
+    </li>
+    <li class="nav-item" role="presentation">
+        <button class="nav-link @(activeTab == "bookings" ? "active" : "")" @onclick="@(() => SetActiveTab("bookings"))">
+            <i class="fas fa-calendar-check me-2"></i>Bookings Management
+        </button>
+    </li>
+    <li class="nav-item" role="presentation">
+        <button class="nav-link @(activeTab == "reviews" ? "active" : "")" @onclick="@(() => SetActiveTab("reviews"))">
+            <i class="fas fa-star me-2"></i>Reviews
+        </button>
+    </li>
+</ul>
+
+
+        <!-- Tab Content -->
+        <div class="tab-content">
+            
+            <!-- Staff Management Tab -->
+            @if (activeTab == "staff")
+            {
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0"><i class="fas fa-users me-2"></i>Staff Management</h5>
+                        <button class="btn btn-primary" @onclick="ShowAddStaffModal">
+                            <i class="fas fa-plus me-1"></i>Add Staff
+                        </button>
+                    </div>
+                    <div class="card-body">
+                        @if (isLoadingStaff)
+                        {
+                            <div class="text-center">
+                                <div class="spinner-border text-primary" role="status"></div>
+                            </div>
+                        }
+                        else if (staffList == null || !staffList.Any())
+                        {
+                            <div class="alert alert-info text-center">
+                                <i class="fas fa-info-circle me-2"></i>No staff members found.
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead class="table-dark">
+                                        <tr>
+                                            <th>Name</th>
+                                            <th>Email</th>
+                                            <th>Phone</th>
+                                            <th>Designation</th>
+                                            <th>Gender</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var staff in staffList)
+                                        {
+                                            <tr>
+                                                <td>@staff.Name</td>
+                                                <td>@staff.Email</td>
+                                                <td>@staff.Phone</td>
+                                                <td><span class="badge bg-secondary">@staff.Designation</span></td>
+                                                <td>@staff.Gender</td>
+                                                <td>
+                                                    <button class="btn btn-sm btn-outline-primary me-1" @onclick="() => ShowEditStaffModal(staff)">
+                                                        <i class="fas fa-edit"></i>
+                                                    </button>
+                                                    <button class="btn btn-sm btn-outline-danger" @onclick="() => DeleteStaff(staff.Id!)">
+                                                        <i class="fas fa-trash"></i>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        }
+                    </div>
+                </div>
+            }
+
+            <!-- Services Management Tab -->
+            @if (activeTab == "services")
+            {
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0"><i class="fas fa-concierge-bell me-2"></i>Services Management</h5>
+                        <button class="btn btn-primary" @onclick="ShowAddServiceModal">
+                            <i class="fas fa-plus me-1"></i>Add Service
+                        </button>
+                    </div>
+                    <div class="card-body">
+                        @if (isLoadingServices)
+                        {
+                            <div class="text-center">
+                                <div class="spinner-border text-primary" role="status"></div>
+                            </div>
+                        }
+                        else if (servicesList == null || !servicesList.Any())
+                        {
+                            <div class="alert alert-info text-center">
+                                <i class="fas fa-info-circle me-2"></i>No services found.
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="row">
+                                @foreach (var service in servicesList)
+                                {
+                                    <div class="col-md-6 col-lg-4 mb-3">
+                                        <div class="card h-100">
+                                            <div class="card-body">
+                                                <h6 class="card-title">@service.Name</h6>
+                                                <p class="card-text text-muted small">@service.Description</p>
+                                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                                    <span class="fw-bold text-success">$@service.Price</span>
+                                                    <span class="text-muted small">@service.Duration</span>
+                                                </div>
+                                                <div class="btn-group w-100">
+                                                    <button class="btn btn-sm btn-outline-primary" @onclick="() => ShowEditServiceModal(service)">
+                                                        <i class="fas fa-edit"></i>
+                                                    </button>
+                                                    <button class="btn btn-sm btn-outline-danger" @onclick="() => DeleteService(service.Id!)">
+                                                        <i class="fas fa-trash"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        }
+                    </div>
+                </div>
+            }
+
+            <!-- Bookings Management Tab -->
+            @if (activeTab == "bookings")
+            {
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0"><i class="fas fa-calendar-check me-2"></i>Bookings Management</h5>
+                    </div>
+                    <div class="card-body">
+                        @if (isLoadingBookings)
+                        {
+                            <div class="text-center">
+                                <div class="spinner-border text-primary" role="status"></div>
+                            </div>
+                        }
+                        else if (bookingsList == null || !bookingsList.Any())
+                        {
+                            <div class="alert alert-info text-center">
+                                <i class="fas fa-info-circle me-2"></i>No bookings found.
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead class="table-dark">
+                                        <tr>
+                                            <th>Date</th>
+                                            <th>Time</th>
+                                            <th>Customer</th>
+                                            <th>Service</th>
+                                            <th>Staff</th>
+                                            <th>Amount</th>
+                                            <th>Status</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var booking in bookingsList)
+                                        {
+                                            <tr>
+                                                <td>@booking.Date</td>
+                                                <td>@booking.Time</td>
+                                                <td>@GetUserName(booking.UserId)</td>
+                                                <td>@GetServiceName(booking.ServiceId)</td>
+                                                <td>@GetStaffName(booking.StaffId)</td>
+                                                <td class="fw-bold text-success">$@booking.Payment?.Amount</td>
+                                                <td>
+                                                    <span class="badge @GetStatusBadgeClass(booking.Status?.Category)">
+                                                        @booking.Status?.Category
+                                                    </span>
+                                                </td>
+                                                <td>
+                                                    <button class="btn btn-sm btn-outline-primary" @onclick="() => ShowUpdateBookingStatusModal(booking)">
+                                                        <i class="fas fa-edit"></i>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        }
+                    </div>
+                </div>
+            }
+
+            <!-- Reviews Tab -->
+            @if (activeTab == "reviews")
+            {
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0"><i class="fas fa-star me-2"></i>Customer Reviews</h5>
+                    </div>
+                    <div class="card-body">
+                        @if (isLoadingReviews)
+                        {
+                            <div class="text-center">
+                                <div class="spinner-border text-primary" role="status"></div>
+                            </div>
+                        }
+                        else if (reviewsList == null || !reviewsList.Any())
+                        {
+                            <div class="alert alert-info text-center">
+                                <i class="fas fa-info-circle me-2"></i>No reviews found.
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="row">
+                                @foreach (var review in reviewsList)
+                                {
+                                    <div class="col-md-6 col-lg-4 mb-3">
+                                        <div class="card h-100">
+                                            <div class="card-body">
+                                                <div class="d-flex justify-content-between align-items-start mb-2">
+                                                    <h6 class="card-title mb-0">@GetUserName(review.UserId)</h6>
+                                                    <small class="text-muted">@review.Date</small>
+                                                </div>
+                                                <p class="card-text"><strong>Service:</strong> @GetServiceName(review.ServiceId)</p>
+                                                <p class="card-text"><strong>Staff:</strong> @GetStaffName(review.StaffId)</p>
+                                                <p class="card-text"><strong>Time:</strong> @review.Time</p>
+                                                <span class="badge @GetStatusBadgeClass(review.Status?.Category)">
+                                                    @review.Status?.Category
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        }
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+
+    <!-- Staff Modal -->
+    <div class="modal fade @(showStaffModal ? "show d-block" : "")" tabindex="-1" style="@(showStaffModal ? "background-color: rgba(0,0,0,0.5);" : "")">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">@(isEditingStaff ? "Edit" : "Add") Staff Member</h5>
+                    <button type="button" class="btn-close" @onclick="HideStaffModal"></button>
+                </div>
+                <div class="modal-body">
+                    <EditForm Model="staffModel" OnValidSubmit="HandleStaffSubmit">
+                        <DataAnnotationsValidator />
+                        
+                        <div class="mb-3">
+                            <label class="form-label">Name</label>
+                            <InputText @bind-Value="staffModel.Name" class="form-control" />
+                            <ValidationMessage For="@(() => staffModel.Name)" />
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Email</label>
+                            <InputText @bind-Value="staffModel.Email" class="form-control" />
+                            <ValidationMessage For="@(() => staffModel.Email)" />
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Phone</label>
+                            <InputText @bind-Value="staffModel.Phone" class="form-control" />
+                            <ValidationMessage For="@(() => staffModel.Phone)" />
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Designation</label>
+                            <InputText @bind-Value="staffModel.Designation" class="form-control" />
+                            <ValidationMessage For="@(() => staffModel.Designation)" />
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Gender</label>
+                            <InputSelect @bind-Value="staffModel.Gender" class="form-select">
+                                <option value="">Select Gender</option>
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                            </InputSelect>
+                            <ValidationMessage For="@(() => staffModel.Gender)" />
+                        </div>
+
+                        @if (!string.IsNullOrEmpty(errorMessage))
+                        {
+                            <div class="alert alert-danger">@errorMessage</div>
+                        }
+
+                        <div class="d-flex justify-content-end gap-2">
+                            <button type="button" class="btn btn-secondary" @onclick="HideStaffModal">Cancel</button>
+                            <button type="submit" class="btn btn-primary" disabled="@isSubmitting">
+                                @if (isSubmitting)
+                                {
+                                    <span class="spinner-border spinner-border-sm me-2"></span>
+                                }
+                                @(isEditingStaff ? "Update" : "Add") Staff
+                            </button>
+                        </div>
+                    </EditForm>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Service Modal -->
+    <div class="modal fade @(showServiceModal ? "show d-block" : "")" tabindex="-1" style="@(showServiceModal ? "background-color: rgba(0,0,0,0.5);" : "")">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">@(isEditingService ? "Edit" : "Add") Service</h5>
+                    <button type="button" class="btn-close" @onclick="HideServiceModal"></button>
+                </div>
+                <div class="modal-body">
+                    <EditForm Model="serviceModel" OnValidSubmit="HandleServiceSubmit">
+                        <DataAnnotationsValidator />
+                        
+                        <div class="mb-3">
+                            <label class="form-label">Name</label>
+                            <InputText @bind-Value="serviceModel.Name" class="form-control" />
+                            <ValidationMessage For="@(() => serviceModel.Name)" />
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Description</label>
+                            <InputTextArea @bind-Value="serviceModel.Description" class="form-control" rows="3" />
+                            <ValidationMessage For="@(() => serviceModel.Description)" />
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Price ($)</label>
+                            <InputNumber @bind-Value="serviceModel.Price" class="form-control" />
+                            <ValidationMessage For="@(() => serviceModel.Price)" />
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Duration</label>
+                            <InputText @bind-Value="serviceModel.Duration" class="form-control" placeholder="e.g., 30 minutes" />
+                            <ValidationMessage For="@(() => serviceModel.Duration)" />
+                        </div>
+
+                        @if (!string.IsNullOrEmpty(errorMessage))
+                        {
+                            <div class="alert alert-danger">@errorMessage</div>
+                        }
+
+                        <div class="d-flex justify-content-end gap-2">
+                            <button type="button" class="btn btn-secondary" @onclick="HideServiceModal">Cancel</button>
+                            <button type="submit" class="btn btn-primary" disabled="@isSubmitting">
+                                @if (isSubmitting)
+                                {
+                                    <span class="spinner-border spinner-border-sm me-2"></span>
+                                }
+                                @(isEditingService ? "Update" : "Add") Service
+                            </button>
+                        </div>
+                    </EditForm>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Booking Status Modal -->
+    <div class="modal fade @(showBookingStatusModal ? "show d-block" : "")" tabindex="-1" style="@(showBookingStatusModal ? "background-color: rgba(0,0,0,0.5);" : "")">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Update Booking Status</h5>
+                    <button type="button" class="btn-close" @onclick="HideBookingStatusModal"></button>
+                </div>
+                <div class="modal-body">
+                    @if (selectedBooking != null)
+                    {
+                        <div class="mb-3">
+                            <p><strong>Customer:</strong> @GetUserName(selectedBooking.UserId)</p>
+                            <p><strong>Service:</strong> @GetServiceName(selectedBooking.ServiceId)</p>
+                            <p><strong>Date & Time:</strong> @selectedBooking.Date @selectedBooking.Time</p>
+                        </div>
+
+                        <EditForm Model="bookingStatusModel" OnValidSubmit="HandleBookingStatusUpdate">
+                            <div class="mb-3">
+                                <label class="form-label">Status</label>
+                                <InputSelect @bind-Value="bookingStatusModel.Category" class="form-select">
+                                    <option value="Pending">Pending</option>
+                                    <option value="Confirmed">Confirmed</option>
+                                    <option value="In Progress">In Progress</option>
+                                    <option value="Completed">Completed</option>
+                                    <option value="Cancelled">Cancelled</option>
+                                    <option value="No Show">No Show</option>
+                                </InputSelect>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label">Description</label>
+                                <InputTextArea @bind-Value="bookingStatusModel.Description" class="form-control" rows="2" />
+                            </div>
+
+                            @if (!string.IsNullOrEmpty(errorMessage))
+                            {
+                                <div class="alert alert-danger">@errorMessage</div>
+                            }
+
+                            <div class="d-flex justify-content-end gap-2">
+                                <button type="button" class="btn btn-secondary" @onclick="HideBookingStatusModal">Cancel</button>
+                                <button type="submit" class="btn btn-primary" disabled="@isSubmitting">
+                                    @if (isSubmitting)
+                                    {
+                                        <span class="spinner-border spinner-border-sm me-2"></span>
+                                    }
+                                    Update Status
+                                </button>
+                            </div>
+                        </EditForm>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<style>
+    .bg-gradient {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    }
+
+    .welcome-section {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 2rem;
+        border-radius: 15px;
+        margin-bottom: 2rem;
+    }
+
+    .nav-pills .nav-link {
+        border-radius: 25px;
+        margin: 0 5px;
+        transition: all 0.3s ease;
+    }
+
+    .nav-pills .nav-link.active {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    }
+
+    .card {
+        border: none;
+        border-radius: 15px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .table th {
+        border-top: none;
+    }
+
+    .btn {
+        border-radius: 8px;
+        transition: all 0.3s ease;
+    }
+
+    .btn:hover {
+        transform: translateY(-2px);
+    }
+
+    .modal-content {
+        border-radius: 15px;
+        border: none;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    }
+
+    .form-control, .form-select {
+        border-radius: 10px;
+        border: 1px solid #ddd;
+        padding: 12px 15px;
+    }
+
+    .form-control:focus, .form-select:focus {
+        border-color: #667eea;
+        box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+    }
+
+    .badge {
+        font-size: 0.75rem;
+        padding: 0.5em 0.75em;
+    }
+
+    .navbar-brand {
+        font-size: 1.5rem;
+    }
+
+    .nav-link {
+        font-weight: 500;
+        transition: all 0.3s ease;
+    }
+
+    .nav-link:hover {
+        transform: translateY(-2px);
+    }
+</style>
+
+@code {
+    private string activeTab = "staff";
+    private bool isLoadingStaff = true;
+    private bool isLoadingServices = true;
+    private bool isLoadingBookings = true;
+    private bool isLoadingReviews = true;
+    private bool isSubmitting = false;
+    private string errorMessage = "";
+
+    private List<Staff>? staffList;
+    private List<Service>? servicesList;
+    private List<Booking>? bookingsList;
+    private List<Review>? reviewsList;
+    private List<User>? usersList;
+
+    private bool showStaffModal = false;
+    private bool showServiceModal = false;
+    private bool showBookingStatusModal = false;
+    private bool isEditingStaff = false;
+    private bool isEditingService = false;
+
+    private Booking? selectedBooking;
+
+    private StaffModel staffModel = new();
+    private ServiceModel serviceModel = new();
+    private StatusModel bookingStatusModel = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (UserStateService.CurrentUser == null || UserStateService.CurrentUser.Role != "Admin")
+        {
+            return;
+        }
+
+        await LoadAllData();
+    }
+
+    private async Task LoadAllData()
+    {
+        await LoadStaff();
+        await LoadServices();
+        await LoadBookings();
+        await LoadReviews();
+    }
+
+    private async Task LoadStaff()
+    {
+        try
+        {
+            isLoadingStaff = true;
+            staffList = await StaffService.GetAllAsync();
+        }
+        catch (Exception ex)
+        {
+            errorMessage = "Error loading staff data.";
+        }
+        finally
+        {
+            isLoadingStaff = false;
+            StateHasChanged();
+        }
+    }
+
+    private async Task LoadServices()
+    {
+        try
+        {
+            isLoadingServices = true;
+            servicesList = await ServiceService.GetAllAsync();
+        }
+        catch (Exception ex)
+        {
+            errorMessage = "Error loading services data.";
+        }
+        finally
+        {
+            isLoadingServices = false;
+            StateHasChanged();
+        }
+    }
+
+    private async Task LoadBookings()
+    {
+        try
+        {
+            isLoadingBookings = true;
+            bookingsList = await BookingService.GetAllAsync();
+
+            var userService = new SalonBookingSystem.DataAccess.Services.UserService();
+            usersList = await userService.GetAllAsync();
+        }
+        catch (Exception ex)
+        {
+            errorMessage = "Error loading bookings data.";
+        }
+        finally
+        {
+            isLoadingBookings = false;
+            StateHasChanged();
+        }
+    }
+
+    private async Task LoadReviews()
+    {
+        try
+        {
+            isLoadingReviews = true;
+            reviewsList = await ReviewService.GetAllAsync();
+        }
+        catch (Exception ex)
+        {
+            errorMessage = "Error loading reviews data.";
+        }
+        finally
+        {
+            isLoadingReviews = false;
+            StateHasChanged();
+        }
+    }
+
+    private void SetActiveTab(string tab)
+    {
+        activeTab = tab;
+        errorMessage = "";
+    }
+
+    private void ShowAddStaffModal()
+    {
+        staffModel = new StaffModel();
+        isEditingStaff = false;
+        showStaffModal = true;
+        errorMessage = "";
+    }
+
+    private void ShowEditStaffModal(Staff staff)
+    {
+        staffModel = new StaffModel
+            {
+                Id = staff.Id,
+                Name = staff.Name,
+                Email = staff.Email,
+                Phone = staff.Phone,
+                Designation = staff.Designation,
+                Gender = staff.Gender
+            };
+        isEditingStaff = true;
+        showStaffModal = true;
+        errorMessage = "";
+    }
+
+    private void HideStaffModal()
+    {
+        showStaffModal = false;
+        staffModel = new StaffModel();
+        errorMessage = "";
+    }
+
+    private async Task HandleStaffSubmit()
+    {
+        isSubmitting = true;
+        errorMessage = "";
+
+        try
+        {
+            var staff = new Staff
+                {
+                    Id = staffModel.Id,
+                    Name = staffModel.Name,
+                    Email = staffModel.Email,
+                    Phone = staffModel.Phone,
+                    Designation = staffModel.Designation,
+                    Gender = staffModel.Gender
+                };
+
+            if (isEditingStaff)
+            {
+                await StaffService.UpdateAsync(staff);
+                await JSRuntime.InvokeVoidAsync("alert", "Staff member updated successfully!");
+            }
+            else
+            {
+                await StaffService.AddAsync(staff);
+                await JSRuntime.InvokeVoidAsync("alert", "Staff member added successfully!");
+            }
+
+            HideStaffModal();
+            await LoadStaff();
+        }
+        catch (Exception ex)
+        {
+            errorMessage = "Error saving staff member.";
+        }
+        finally
+        {
+            isSubmitting = false;
+        }
+    }
+
+    private async Task DeleteStaff(string staffId)
+    {
+        if (await JSRuntime.InvokeAsync<bool>("confirm", "Are you sure you want to delete this staff member?"))
+        {
+            try
+            {
+                await StaffService.DeleteAsync(staffId);
+                await JSRuntime.InvokeVoidAsync("alert", "Staff member deleted successfully!");
+                await LoadStaff();
+            }
+            catch (Exception ex)
+            {
+                await JSRuntime.InvokeVoidAsync("alert", "Error deleting staff member.");
+            }
+        }
+    }
+
+    private void ShowAddServiceModal()
+    {
+        serviceModel = new ServiceModel();
+        isEditingService = false;
+        showServiceModal = true;
+        errorMessage = "";
+    }
+
+    private void ShowEditServiceModal(Service service)
+    {
+        serviceModel = new ServiceModel
+            {
+                Id = service.Id,
+                Name = service.Name,
+                Description = service.Description,
+                Price = service.Price,
+                Duration = service.Duration
+            };
+        isEditingService = true;
+        showServiceModal = true;
+        errorMessage = "";
+    }
+
+    private void HideServiceModal()
+    {
+        showServiceModal = false;
+        serviceModel = new ServiceModel();
+        errorMessage = "";
+    }
+
+    private async Task HandleServiceSubmit()
+    {
+        isSubmitting = true;
+        errorMessage = "";
+
+        try
+        {
+            var service = new Service
+                {
+                    Id = serviceModel.Id,
+                    Name = serviceModel.Name,
+                    Description = serviceModel.Description,
+                    Price = serviceModel.Price,
+                    Duration = serviceModel.Duration
+                };
+
+            if (isEditingService)
+            {
+                await ServiceService.UpdateAsync(service);
+                await JSRuntime.InvokeVoidAsync("alert", "Service updated successfully!");
+            }
+            else
+            {
+                await ServiceService.AddAsync(service);
+                await JSRuntime.InvokeVoidAsync("alert", "Service added successfully!");
+            }
+
+            HideServiceModal();
+            await LoadServices();
+        }
+        catch (Exception ex)
+        {
+            errorMessage = "Error saving service.";
+        }
+        finally
+        {
+            isSubmitting = false;
+        }
+    }
+
+    private async Task DeleteService(string serviceId)
+    {
+        if (await JSRuntime.InvokeAsync<bool>("confirm", "Are you sure you want to delete this service?"))
+        {
+            try
+            {
+                await ServiceService.DeleteAsync(serviceId);
+                await JSRuntime.InvokeVoidAsync("alert", "Service deleted successfully!");
+                await LoadServices();
+            }
+            catch (Exception ex)
+            {
+                await JSRuntime.InvokeVoidAsync("alert", "Error deleting service.");
+            }
+        }
+    }
+
+    private void ShowUpdateBookingStatusModal(Booking booking)
+    {
+        selectedBooking = booking;
+        bookingStatusModel = new StatusModel
+            {
+                Category = booking.Status?.Category ?? "Pending",
+                Description = booking.Status?.Description ?? ""
+            };
+        showBookingStatusModal = true;
+        errorMessage = "";
+    }
+
+    private void HideBookingStatusModal()
+    {
+        showBookingStatusModal = false;
+        selectedBooking = null;
+        bookingStatusModel = new StatusModel();
+        errorMessage = "";
+    }
+
+    private async Task HandleBookingStatusUpdate()
+    {
+        if (selectedBooking == null) return;
+
+        isSubmitting = true;
+        errorMessage = "";
+
+        try
+        {
+            selectedBooking.Status = new StatusDetail
+                {
+                    StatusId = selectedBooking.Status?.StatusId,
+                    Category = bookingStatusModel.Category,
+                    Description = bookingStatusModel.Description
+                };
+
+            await BookingService.UpdateAsync(selectedBooking);
+            await JSRuntime.InvokeVoidAsync("alert", "Booking status updated successfully!");
+
+            HideBookingStatusModal();
+            await LoadBookings();
+        }
+        catch (Exception ex)
+        {
+            errorMessage = "Error updating booking status.";
+        }
+        finally
+        {
+            isSubmitting = false;
+        }
+    }
+
+    private string GetUserName(string? userId)
+    {
+        if (string.IsNullOrEmpty(userId) || usersList == null)
+            return "Unknown";
+
+        var user = usersList.FirstOrDefault(u => u.Id == userId);
+        return user?.Name ?? "Unknown";
+    }
+
+    private string GetServiceName(string? serviceId)
+    {
+        if (string.IsNullOrEmpty(serviceId) || servicesList == null)
+            return "Unknown";
+
+        var service = servicesList.FirstOrDefault(s => s.Id == serviceId);
+        return service?.Name ?? "Unknown";
+    }
+
+    private string GetStaffName(string? staffId)
+    {
+        if (string.IsNullOrEmpty(staffId) || staffList == null)
+            return "Unknown";
+
+        var staff = staffList.FirstOrDefault(s => s.Id == staffId);
+        return staff?.Name ?? "Unknown";
+    }
+
+    private string GetStatusBadgeClass(string? status)
+    {
+        return status switch
+        {
+            "Pending" => "bg-warning",
+            "Confirmed" => "bg-info",
+            "In Progress" => "bg-primary",
+            "Completed" => "bg-success",
+            "Cancelled" => "bg-danger",
+            "No Show" => "bg-secondary",
+            _ => "bg-secondary"
+        };
+    }
+
+    private async Task Logout()
+    {
+        UserStateService.ClearUser();
+        Navigation.NavigateTo("/login");
+    }
+
+    public class StaffModel
+    {
+        public string? Id { get; set; }
+        public string? Name { get; set; }
+        public string? Email { get; set; }
+        public string? Phone { get; set; }
+        public string? Designation { get; set; }
+        public string? Gender { get; set; }
+    }
+
+    public class ServiceModel
+    {
+        public string? Id { get; set; }
+        public string? Name { get; set; }
+        public string? Description { get; set; }
+        public int Price { get; set; }
+        public string? Duration { get; set; }
+    }
+
+    public class StatusModel
+    {
+        public string? Category { get; set; }
+        public string? Description { get; set; }
+    }
+}

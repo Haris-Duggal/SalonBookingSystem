@@ -1,0 +1,469 @@
+﻿@page "/home"
+@inject ServiceService ServiceService
+@inject StaffService StaffService
+@inject BookingService BookingService
+@inject UserStateService UserStateService
+@inject NavigationManager Navigation
+@inject IJSRuntime JSRuntime
+@rendermode InteractiveServer
+
+@if (UserStateService.CurrentUser == null)
+{
+    <div class="d-flex justify-content-center align-items-center" style="height: 100vh;">
+        <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+    </div>
+}
+else
+{
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-grad">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="/home">
+                <i class="fas fa-cut me-2"></i>Glamour Studio
+            </a>
+
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/home">
+                            <i class="fas fa-home me-1"></i>Home
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/bookings">
+                            <i class="fas fa-calendar-alt me-1"></i>Bookings
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/admin">
+                            <i class="fas fa-cog me-1"></i>Admin
+                        </a>
+                    </li>
+                </ul>
+
+                <div class="navbar-nav">
+
+                    <button style="border: none; border-radius: 25px; padding: 10px 20px; color: #ddd;" class="badge-danger" @onclick="Logout">
+                        <i class="fas fa-sign-out-alt me-1"></i>Logout
+                    </button>
+
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container mt-4">
+        <div class="row">
+            <div class="col-12">
+                <div class="welcome-section mb-5">
+                    <h1 class="display-4 text-center mb-3">Welcome, @UserStateService.CurrentUser.Name!</h1>
+                    <p class="lead text-center">Choose from our premium salon services</p>
+                </div>
+            </div>
+        </div>
+
+        @if (isLoading)
+        {
+            <div class="row justify-content-center">
+                <div class="col-auto">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">Loading services...</span>
+                    </div>
+                </div>
+            </div>
+        }
+        else if (services == null || !services.Any())
+        {
+            <div class="row justify-content-center">
+                <div class="col-md-6 text-center">
+                    <div class="alert alert-info">
+                        <i class="fas fa-info-circle me-2"></i>No services available at the moment.
+                    </div>
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="row">
+                @foreach (var service in services)
+                {
+                    <div class="col-lg-4 col-md-6 mb-4">
+                        <div class="card service-card h-100">
+                            <div class="card-body d-flex flex-column">
+                                <div class="service-icon mb-3">
+                                    <i class="fas @GetServiceIcon(service.Name) fa-3x text-primary"></i>
+                                </div>
+
+                                <h5 class="card-title fw-bold">@service.Name</h5>
+                                <p class="card-text text-muted flex-grow-1">@service.Description</p>
+
+                                <div class="service-details mb-3">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <span class="price fw-bold text-success">
+                                            <i class="fas fa-dollar-sign"></i>@service.Price
+                                        </span>
+                                        <span class="duration text-muted">
+                                            <i class="fas fa-clock"></i> @service.Duration
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <button class="btn btn-primary btn-book" @onclick="() => ShowBookingModal(service)">
+                                    <i class="fas fa-calendar-plus me-1"></i>Book Now
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+    </div>
+
+    <!-- Booking Modal -->
+    <div class="modal fade @(showBookingModal ? "show d-block" : "")" tabindex="-1" style="@(showBookingModal ? "background-color: rgba(0,0,0,0.5);" : "")">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        <i class="fas fa-calendar-plus me-2"></i>Book Service: @selectedService?.Name
+                    </h5>
+                    <button type="button" class="btn-close" @onclick="HideBookingModal"></button>
+                </div>
+                <div class="modal-body">
+                    @if (selectedService != null)
+                    {
+                        <div class="service-summary mb-4 p-3 bg-light rounded">
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <h6 class="fw-bold">@selectedService.Name</h6>
+                                    <p class="text-muted mb-1">@selectedService.Description</p>
+                                    <small class="text-muted">Duration: @selectedService.Duration</small>
+                                </div>
+                                <div class="col-md-4 text-md-end">
+                                    <span class="h5 text-success fw-bold">$@selectedService.Price</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <EditForm Model="bookingModel" OnValidSubmit="HandleBooking">
+                            <DataAnnotationsValidator />
+
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Select Staff Member</label>
+                                    <InputSelect @bind-Value="bookingModel.StaffId" class="form-select">
+                                        <option value="">Choose a staff member...</option>
+                                        @if (availableStaff != null)
+                                        {
+                                            @foreach (var staff in availableStaff)
+                                            {
+                                                <option value="@staff.Id">@staff.Name - @staff.Designation</option>
+                                            }
+                                        }
+                                    </InputSelect>
+                                    <ValidationMessage For="@(() => bookingModel.StaffId)" />
+                                </div>
+
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Select Date</label>
+                                    <InputDate @bind-Value="bookingModel.BookingDate" class="form-control" min="@DateTime.Today.ToString("yyyy-MM-dd")" />
+                                    <ValidationMessage For="@(() => bookingModel.BookingDate)" />
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Select Time</label>
+                                    <InputSelect @bind-Value="bookingModel.Time" class="form-select">
+                                        <option value="">Choose a time...</option>
+                                        @foreach (var time in availableTimeSlots)
+                                        {
+                                            <option value="@time">@time</option>
+                                        }
+                                    </InputSelect>
+                                    <ValidationMessage For="@(() => bookingModel.Time)" />
+                                </div>
+
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Payment Method</label>
+                                    <InputSelect @bind-Value="bookingModel.PaymentMethod" class="form-select">
+                                        <option value="">Choose payment method...</option>
+                                        <option value="Cash">Cash</option>
+                                        <option value="Card">Credit/Debit Card</option>
+                                        <option value="Online">Online Payment</option>
+                                    </InputSelect>
+                                    <ValidationMessage For="@(() => bookingModel.PaymentMethod)" />
+                                </div>
+                            </div>
+
+                            @if (!string.IsNullOrEmpty(bookingError))
+                            {
+                                <div class="alert alert-danger">@bookingError</div>
+                            }
+
+                            <div class="d-flex justify-content-end gap-2">
+                                <button type="button" class="btn btn-secondary" @onclick="HideBookingModal">Cancel</button>
+                                <button type="submit" class="btn btn-primary" disabled="@isBooking">
+                                    @if (isBooking)
+                                    {
+                                        <span class="spinner-border spinner-border-sm me-2"></span>
+                                    }
+                                    <i class="fas fa-check me-1"></i>Confirm Booking
+                                </button>
+                            </div>
+                        </EditForm>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<style>
+    .bg-grad {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    }
+
+    .badge-danger {
+        background-color: #dc3545;
+    }
+
+    .service-card {
+        border: none;
+        border-radius: 15px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+        overflow: hidden;
+    }
+
+        .service-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        }
+
+    .service-icon {
+        text-align: center;
+        padding: 1rem 0;
+        background: linear-gradient(45deg, #f8f9fa, #e9ecef);
+        margin: -20px -20px 20px -20px;
+    }
+
+    .btn-book {
+        border-radius: 25px;
+        padding: 10px 20px;
+        font-weight: 500;
+        transition: all 0.3s ease;
+    }
+
+        .btn-book:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 123, 255, 0.3);
+        }
+
+    .price {
+        font-size: 1.2rem;
+    }
+
+    .welcome-section {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 3rem 2rem;
+        border-radius: 15px;
+        margin-bottom: 2rem;
+    }
+
+    .service-summary {
+        border-left: 4px solid #667eea;
+    }
+
+    .modal-content {
+        border-radius: 15px;
+        border: none;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    }
+
+    .form-control, .form-select {
+        border-radius: 10px;
+        border: 1px solid #ddd;
+        padding: 12px 15px;
+    }
+
+        .form-control:focus, .form-select:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+        }
+
+    .navbar-brand {
+        font-size: 1.5rem;
+    }
+
+    .nav-link {
+        font-weight: 500;
+        transition: all 0.3s ease;
+    }
+
+        .nav-link:hover {
+            transform: translateY(-2px);
+        }
+</style>
+
+@code {
+    private List<Service>? services;
+    private List<Staff>? availableStaff;
+    private Service? selectedService;
+    private bool isLoading = true;
+    private bool showBookingModal = false;
+    private bool isBooking = false;
+    private string bookingError = "";
+
+    private BookingModel bookingModel = new();
+
+    private List<string> availableTimeSlots = new()
+    {
+        "09:00 AM", "10:00 AM", "11:00 AM", "12:00 PM",
+        "01:00 PM", "02:00 PM", "03:00 PM", "04:00 PM",
+        "05:00 PM", "06:00 PM", "07:00 PM"
+    };
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (UserStateService.CurrentUser == null)
+        {
+            Navigation.NavigateTo("/");
+            return;
+        }
+
+        await LoadServices();
+        await LoadStaff();
+    }
+
+    private async Task LoadServices()
+    {
+        try
+        {
+            isLoading = true;
+            services = await ServiceService.GetAllAsync();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+        }
+        finally
+        {
+            isLoading = false;
+        }
+    }
+
+    private async Task LoadStaff()
+    {
+        try
+        {
+            availableStaff = await StaffService.GetAllAsync();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+        }
+    }
+
+    private void ShowBookingModal(Service service)
+    {
+        selectedService = service;
+        bookingModel = new BookingModel();
+        bookingError = "";
+        showBookingModal = true;
+    }
+
+    private void HideBookingModal()
+    {
+        showBookingModal = false;
+        selectedService = null;
+        bookingModel = new();
+        bookingError = "";
+    }
+
+    private async Task HandleBooking()
+    {
+        isBooking = true;
+        bookingError = "";
+
+        try
+        {
+            var booking = new Booking
+                {
+                    UserId = UserStateService.CurrentUser.Id,
+                    ServiceId = selectedService.Id,
+                    StaffId = bookingModel.StaffId,
+                    Date = bookingModel.BookingDate.ToString("yyyy-MM-dd"),
+                    Time = bookingModel.Time,
+                    Status = new StatusDetail
+                    {
+                        Category = "Pending",
+                        Description = "Booking confirmed, waiting for service"
+                    },
+                    Payment = new PaymentDetail
+                    {
+                        Amount = selectedService.Price,
+                        Method = bookingModel.PaymentMethod,
+                        Status = "Pending"
+                    }
+                };
+
+            await BookingService.AddAsync(booking);
+
+            HideBookingModal();
+
+            await JSRuntime.InvokeVoidAsync("alert", "Booking confirmed successfully!");
+        }
+        catch (Exception ex)
+        {
+            bookingError = "An error occurred while booking. Please try again.";
+        }
+        finally
+        {
+            isBooking = false;
+        }
+    }
+
+    private void Logout()
+    {
+        UserStateService.ClearUser();
+        Navigation.NavigateTo("/");
+    }
+
+    private string GetServiceIcon(string serviceName)
+    {
+        return serviceName?.ToLower() switch
+        {
+            var name when name.Contains("haircut") || name.Contains("hair") => "fa-cut",
+            var name when name.Contains("facial") || name.Contains("face") => "fa-smile",
+            var name when name.Contains("massage") => "fa-hand-sparkles",
+            var name when name.Contains("manicure") || name.Contains("nail") => "fa-hand",
+            var name when name.Contains("makeup") => "fa-palette",
+            var name when name.Contains("eyebrow") => "fa-eye",
+            _ => "fa-star"
+        };
+    }
+
+    public class BookingModel
+    {
+        [Required(ErrorMessage = "Please select a staff member")]
+        public string StaffId { get; set; } = "";
+
+        [Required(ErrorMessage = "Please select a date")]
+        public DateTime BookingDate { get; set; } = DateTime.Today.AddDays(1);
+
+        [Required(ErrorMessage = "Please select a time")]
+        public string Time { get; set; } = "";
+
+        [Required(ErrorMessage = "Please select a payment method")]
+        public string PaymentMethod { get; set; } = "";
+    }
+}
